@@ -4,6 +4,7 @@ const app = require('./app');
 const { Server } = require('socket.io');
 const productService = require('./services/productService');
 const { connect: connectDB } = require('./config/database');
+const logger = require('./config/logger');
 
 const PORT = process.env.PORT || 8080;
 
@@ -15,18 +16,18 @@ const io = new Server(server);
 app.set('io', io);
 
 io.on('connection', async (socket) => {
-  console.log('cliente conectado');
+  logger.http('Cliente conectado por WebSocket');
   try {
     const products = await productService.getAll();
     socket.emit('products', products);
   } catch (err) {
-    console.error('Error al enviar productos por WebSocket:', err);
+    logger.error('Error al enviar productos por WebSocket', { error: err.message });
     socket.emit('products', []);
   }
 });
 
 connectDB().then(() => {
   server.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    logger.info(`Servidor corriendo en http://localhost:${PORT}`);
   });
 });
