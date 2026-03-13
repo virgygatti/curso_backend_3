@@ -1,12 +1,12 @@
 {
-  "name": "backend1",
+  "name": "backend3",
   "version": "1.0.0",
   "description": "Proyecto Final - E-commerce Backend",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --file test/setup.js --exit test/*.test.js"
   },
   "keywords": [
     "ecommerce",
@@ -25,13 +25,19 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.1.0",
     "mongoose": "^9.2.0",
+    "multer": "^2.1.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "socket.io": "^4.8.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.19.0"
   },
   "devDependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5",
     "nodemon": "^3.1.11",
-    "socket.io-client": "^4.8.3"
+    "socket.io-client": "^4.8.3",
+    "supertest": "^7.2.2"
   }
 }

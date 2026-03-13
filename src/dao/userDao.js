@@ -5,7 +5,7 @@ async function findOneByEmail(email) {
 }
 
 async function findById(id) {
-  return User.findById(id).lean();
+  return User.findById(id).select('-password').lean();
 }
 
 async function findByIdWithPassword(id) {
@@ -19,6 +19,17 @@ async function create(data) {
 
 async function updateById(id, data) {
   const user = await User.findByIdAndUpdate(id, data, { new: true }).select('-password').lean();
+  return user ? { ...user, id: user._id.toString() } : null;
+}
+
+async function addDocuments(id, docs) {
+  const user = await User.findByIdAndUpdate(
+    id,
+    { $push: { documents: { $each: docs } } },
+    { new: true }
+  )
+    .select('-password')
+    .lean();
   return user ? { ...user, id: user._id.toString() } : null;
 }
 
@@ -38,6 +49,7 @@ module.exports = {
   findByIdWithPassword,
   create,
   updateById,
+  addDocuments,
   deleteById,
   findAll
 };

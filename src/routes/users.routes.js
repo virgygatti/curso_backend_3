@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const userService = require('../services/userService');
+const usersController = require('../controllers/users.controller');
+const { uploadDocuments } = require('../config/multer');
 
 // GET /api/users - Listar usuarios (sin password)
 router.get('/', async (req, res, next) => {
@@ -11,6 +13,9 @@ router.get('/', async (req, res, next) => {
     next(err);
   }
 });
+
+// POST /api/users/:uid/documents - Subir uno o varios documentos (Multer)
+router.post('/:uid/documents', uploadDocuments.array('documents', 10), usersController.uploadDocuments);
 
 // GET /api/users/:uid
 router.get('/:uid', async (req, res, next) => {

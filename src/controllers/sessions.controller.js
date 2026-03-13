@@ -46,6 +46,7 @@ async function login(req, res, next) {
     if (!ok) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
+    await userService.update(user._id.toString(), { last_connection: new Date() });
     const token = jwt.sign({ sub: user._id.toString() }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
     res.cookie(COOKIE_NAME, token, { httpOnly: true, maxAge: COOKIE_MAX_AGE });
     const { password: _, ...userData } = user;
@@ -69,10 +70,21 @@ async function current(req, res, next) {
 
 /**
  * POST /api/sessions/logout
- * Limpia la cookie del token.
+ * Actualiza last_connection del usuario y limpia la cookie del token.
  */
 async function logout(req, res, next) {
   try {
+    const token = req.cookies && req.cookies[COOKIE_NAME];
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        if (decoded.sub) {
+          await userService.update(decoded.sub, { last_connection: new Date() });
+        }
+      } catch (_) {
+        // Token inválido o expirado; igual se limpia la cookie
+      }
+    }
     res.clearCookie(COOKIE_NAME);
     res.status(200).json({ message: 'Sesión cerrada' });
   } catch (err) {
