@@ -25,6 +25,10 @@ async function update(id, body) {
   return userRepository.update(id, body);
 }
 
+async function addDocuments(id, docs) {
+  return userRepository.addDocuments(id, docs);
+}
+
 async function remove(id) {
   return userRepository.remove(id);
 }
@@ -36,5 +40,6 @@ module.exports = {
   getAll,
   getById,
   update,
+  addDocuments,
   remove
 };

@@ -11,6 +11,8 @@ const usersRouter = require('./routes/users.routes');
 const mocksRouter = require('./routes/mocks.router');
 const { errorHandler } = require('./middlewares/errorHandler');
 const logger = require('./config/logger');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 
 require('./config/passport.config');
 
@@ -38,6 +40,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rutas de vistas (index y realtimeproducts)
 app.use('/', viewsRouter);
+
+// Documentación API (Swagger)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rutas API
 app.use('/api/sessions', sessionsRouter);

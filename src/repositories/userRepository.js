@@ -64,6 +64,10 @@ async function update(id, body) {
   return userDao.updateById(id, updates);
 }
 
+async function addDocuments(id, docs) {
+  return userDao.addDocuments(id, docs);
+}
+
 async function remove(id) {
   return userDao.deleteById(id);
 }
@@ -76,5 +80,6 @@ module.exports = {
   getAll,
   getById,
   update,
+  addDocuments,
   remove
 };

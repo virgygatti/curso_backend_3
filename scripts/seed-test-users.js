@@ -10,7 +10,7 @@ const bcrypt = require('bcrypt');
 const User = require('../src/models/User');
 const Cart = require('../src/models/Cart');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/backend1';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/backend3';
 const SALT_ROUNDS = 10;
 
 const TEST_USERS = [
